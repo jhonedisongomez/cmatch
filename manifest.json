@@ -1,0 +1,6 @@
+{
+  "name": "cmatch",
+  "short_name": "cmatch",
+  "start_url": "/",
+  "display": "standalone"
+}
