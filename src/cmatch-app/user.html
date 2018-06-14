@@ -4,140 +4,140 @@
 <dom-module id="user-module">
   <template>
     <style is="custom-style">
+      :host {
 
-    :host{
+        width: 100%;
+        height: 100%;
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--layout-center-justified);
 
-      width: 100%;
-      height: 100%;
-      @apply(--layout-horizontal);
-      @apply(--layout-center);
-      @apply(--layout-center-justified);
+      }
 
-    }
+      paper-material {
+        display: block;
+        width: 300px;
+        height: 400px;
+      }
 
-    paper-material{
-      display: block;
-      width: 300px;
-      height: 400px;
-    }
+      iron-form {
+        padding: 40px;
+      }
 
-    iron-form{
-      padding: 40px;
-    }
+      .buttons {
+        width: 100%;
+      }
 
-    .buttons{
-      width: 100%;
-    }
+      paper-input {
+        margin-top: 15px
+      }
 
-    paper-input{
-      margin-top: 15px
-    }
+      paper-button {
+        margin-top: 10px;
+      }
 
-    paper-button{
-      margin-top: 10px;
-    }
-
-    paper-dialog{
-      min-width: 300px;
-      margin: 0;
-    }
-
+      paper-dialog {
+        min-width: 300px;
+        margin: 0;
+      }
     </style>
 
     <paper-material elevation="5" animated>
       <iron-form id="signinform">
-        <paper-input id="username"  value="{{user.username::input}}" required
-        label="email" error-message="Este campo no puede ir vacio">
-      </paper-input>
-      <paper-input id="password" type="password" value="{{user.password::input}}" required
-      label="Contraseña" error-message="Este campo no puede ir vacio"
-      ></paper-input>
-      <paper-button id="btnsignin" raised class="buttons" on-tap="_signIn">inicar sesión</paper-button>
-      <paper-button id="btnsignup" raised class="buttons" on-tap="_openDlgSignUpForm">registrate</paper-button>
-    </iron-form>
-  </paper-material>
-  <paper-dialog id="dlgsignupform" entry-animation="scale-up-animation">
-    <h2>Registrate </h2>
-    <paper-dialog-scrollable>
-      <iron-form id="signupform" style="padding:10px;">
-        <paper-input id="name"  required
-        label="Nombres" error-message="este campo no puede ir vacio"
-        ></paper-input>
-        <paper-input id="username2"  required
-        label="nombre de usuario" error-message="Este campo no puede ir vacio"
-        ></paper-input>
-        <paper-input id="password2"  type="password" required
-        label="Contraseña" error-message="este campo no puede ir vacio"
-        ></paper-input>
-        <paper-input id="passwordagain" type="password" required
-        label="Repita la contraseña" error-message="este campo no puede ir vacio"
-        ></paper-input>
-        <paper-button class="buttons" raised on-tap="_signUp">Registrar</paper-button>
-        <paper-button class="buttons" raised on-tap="_onCloseDlgSignUpForm">cancelar</paper-button>
+        <paper-input id="username" value="{{user.username::input}}" required label="email" error-message="Este campo no puede ir vacio">
+        </paper-input>
+        <paper-input id="password" type="password" value="{{user.password::input}}" required label="Contraseña" error-message="Este campo no puede ir vacio"></paper-input>
+        <paper-button id="btnsignin" raised class="buttons" on-tap="_signIn">inicar sesión</paper-button>
+        <paper-button id="btnsignup" raised class="buttons" on-tap="_openDlgSignUpForm">registrate</paper-button>
       </iron-form>
-    </paper-dialog-scrollable>
-  </paper-dialog>
+    </paper-material>
+    <paper-dialog id="dlgsignupform" entry-animation="scale-up-animation">
+      <h2>Registrate </h2>
+      <paper-dialog-scrollable>
+        <iron-form id="signupform" style="padding:10px;">
+          <paper-input id="name" required label="Nombres" error-message="este campo no puede ir vacio"></paper-input>
+          <paper-input id="username2" required label="nombre de usuario" error-message="Este campo no puede ir vacio"></paper-input>
+          <paper-input id="password2" type="password" required label="Contraseña" error-message="este campo no puede ir vacio"></paper-input>
+          <paper-input id="passwordagain" type="password" required label="Repita la contraseña" error-message="este campo no puede ir vacio"></paper-input>
+          <paper-button class="buttons" raised on-tap="_signUp">Registrar</paper-button>
+          <paper-button class="buttons" raised on-tap="_onCloseDlgSignUpForm">cancelar</paper-button>
+        </iron-form>
+      </paper-dialog-scrollable>
+    </paper-dialog>
 
-  <iron-ajax
-  id="formajax"
-  handle-as="json"
-  loading={{loading}}
-  on-response="_handleResponse"
-  debounce-duration="300">
-  
-</iron-ajax>
+    <iron-ajax id="formajax" handle-as="json" loading={{loading}} on-response="_handleResponse" debounce-duration="300">
 
-</template>
+    </iron-ajax>
 
-<script type="text/javascript">
+  </template>
 
-class UserElement extends Polymer.Element {
+  <script type="text/javascript">
 
-  static get is(){return 'user-module';}
+    class UserElement extends Polymer.Element {
 
-  static get properties(){
-    return{
-      user:{
-        type: Object,
-        notify: true,
-        value: function(){
-          return {username:'', password:''};
-        },
-      },
+      static get is() {return 'user-module'; }
 
-      loading:{
-        type:Boolean,
-        notify:true,
-        value:false,
+      static get properties() {
+        return {
+          user: {
+            type: Object,
+            notify: true,
+            value: function () {
+              return { username: '', password: '' };
+            },
+          },
+
+          loading: {
+            type: Boolean,
+            notify: true,
+            value: false,
+          }
+        };
       }
-    };
-  }
 
-  _openDlgSignUpForm(){
-    this.$.dlgsignupform.open();
-  }
+      _openDlgSignUpForm() {
+        this.$.dlgsignupform.open();
+      }
 
-  _onCloseDlgSignUpForm(){
-    this.$.dlgsignupform.close();
-  }
+      _onCloseDlgSignUpForm() {
+        this.$.dlgsignupform.close();
+      }
 
-  _signIn(){
-    if (this.$.username.validate() && this.$.password.validate()) {
+      _signIn() {
+        
+        if (this.$.username.validate() && this.$.password.validate()) {
 
+          var iajax = this.$.formajax;
+          let data = { username: this.user.username, password: this.user.password };
+          iajax.method = 'POST';
+          iajax.headers = {
+            "X-Requested-With": "XMLHttpRequest",
+            "content-type": "application/json"
+          };
+
+          iajax.url = parent.api + 'rest-auth/login/';
+          iajax.body = data;
+          iajax.generateRequest();
+
+
+        }
+
+      }
+
+      _signUp() {
+
+      }
+
+      _handleResponse(response) {
+        response = response.detail.response;
+        sessionStorage.setItem('key', response.key);
+        //reload the page
+        window.location.href = "/";
+      }
     }
-  }
 
-  _signUp(){
+    window.customElements.define(UserElement.is, UserElement);
 
-  }
-
-  _handleResponse(){
-
-  }
-}
-
-window.customElements.define(UserElement.is, UserElement);
-
-</script>
+  </script>
 
 </dom-module>

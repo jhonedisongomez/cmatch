@@ -1,24 +1,48 @@
-<link rel="import" href="user.html">
+<link rel="import" href="../elements.html">
 
 <dom-module id="cmatch-app">
   <template>
     <style>
-
-      :host{
+      :host {
         display: block;
-      }
-
-      .cen{
         width: 100%;
         height: 100%;
         margin: 0;
       }
 
+      .cen {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+
+      iron-pages {
+        height: 100%;
+      }
     </style>
 
-    <div class="cen">
-    <user-module></user-module>
-    </div>
+    
+      <div class="cen" hidden$="[[isAuthenticated]]">
+        <app-location route="{{route}}"></app-location>
+        <app-route route="{{route}}" pattern="/:page" data="{{data}}" tail="{{tail}}">
+        </app-route>
+        <nav>
+          <a href="/">inicio</a>
+          <a href="/canchas/">Canchas</a>
+        </nav>
+
+        <iron-pages selected="[[data.page]]" attr-for-selected="page">
+          <mi-cuenta-page page="canchas"></mi-cuenta-page>
+          <user-module page="login"></user-module>
+        </iron-pages>
+      </div>
+
+      <div class="cen" hidden$="[[!isAuthenticated]]">
+        <user-module></user-module>
+      </div>
+
+
+  
   </template>
 
   <script>
@@ -27,9 +51,26 @@
      * @polymer
      */
     class CmatchApp extends Polymer.Element {
-      static get is() { return 'cmatch-app'; }
+      static get is() {
+        parent.api = "http://localhost:8000/";
+
+        var key = sessionStorage.getItem('key');
+
+        if(key != null && key != ''){
+          this.isAuthenticated = true;
+        }else{
+          this.isAuthenticated = false;
+        }
+        return 'cmatch-app';
+      }
       static get properties() {
 
+        return {
+          isAuthenticated: {
+            type: Boolean,
+            value: false,
+          }
+        }
       }
     }
 
